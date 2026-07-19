@@ -1,0 +1,35 @@
+<Project>
+
+  <!--
+    Common language settings the moved strategy projects rely on (they inherited these from the host
+    repo's Directory.Build.props; reproduced here so the projects compile unchanged). Each strategy
+    csproj still declares its own <TargetFramework> and <UseWPF>.
+  -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <!--
+      Plugin-SDK package version — single source of truth for every strategy's DaxAlgo.Sdk[.Wpf]
+      PackageReference. The host loads a plugin only when its declared SDK major.minor matches the
+      host's SdkInfo.Version (pre-1.0: every minor bump is a breaking plugin contract). Bump this in
+      lockstep with a host upgrade, then rebuild + repackage.
+    -->
+    <DaxAlgoSdkVersion>0.1.1-alpha</DaxAlgoSdkVersion>
+  </PropertyGroup>
+
+  <!--
+    Assembly/namespace identity = project name, EXCEPT WPF's throwaway "<Project>_<hash>_wpftmp"
+    pass-2 project, which must keep the original assembly name or a XAML file that references a type
+    from its own assembly fails with MC3074. (Same guard as the host repo.)
+  -->
+  <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('_wpftmp'))">
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+  </PropertyGroup>
+
+</Project>

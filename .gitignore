@@ -1,0 +1,17 @@
+# .NET build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+
+# IDE
+.vs/
+.idea/
+
+# Packaged plugins
+dist/
+*.daxplugin
+
+# CI workflow held back — push needs the gh token's "workflow" scope (see below).
+.github/workflows/

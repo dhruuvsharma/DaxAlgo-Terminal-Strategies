@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Strategies/">
+    <Project Path="src/TradingTerminal.Strategies.CumulativeDelta/TradingTerminal.Strategies.CumulativeDelta.csproj" />
+    <Project Path="src/TradingTerminal.Strategies.FilteredOrderFlow/TradingTerminal.Strategies.FilteredOrderFlow.csproj" />
+    <Project Path="src/TradingTerminal.Strategies.ImbalanceHeatFront/TradingTerminal.Strategies.ImbalanceHeatFront.csproj" />
+    <Project Path="src/TradingTerminal.Strategies.IndexKScoreSurface/TradingTerminal.Strategies.IndexKScoreSurface.csproj" />
+    <Project Path="src/TradingTerminal.Strategies.IndexRegimeGraph/TradingTerminal.Strategies.IndexRegimeGraph.csproj" />
+    <Project Path="src/TradingTerminal.Strategies.OrderFlowCube/TradingTerminal.Strategies.OrderFlowCube.csproj" />
+    <Project Path="src/TradingTerminal.Strategies.OrderFlowPressureMap/TradingTerminal.Strategies.OrderFlowPressureMap.csproj" />
+    <Project Path="src/TradingTerminal.Strategies.OrderFlowSurfaceSpike/TradingTerminal.Strategies.OrderFlowSurfaceSpike.csproj" />
+    <Project Path="src/TradingTerminal.Strategies.SigmaIcFlow/TradingTerminal.Strategies.SigmaIcFlow.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/TradingTerminal.Strategies.SigmaIcFlow.Tests/TradingTerminal.Strategies.SigmaIcFlow.Tests.csproj" />
+    <Project Path="tests/TradingTerminal.Strategies.OrderFlowPressureMap.Tests/TradingTerminal.Strategies.OrderFlowPressureMap.Tests.csproj" />
+  </Folder>
+</Solution>
