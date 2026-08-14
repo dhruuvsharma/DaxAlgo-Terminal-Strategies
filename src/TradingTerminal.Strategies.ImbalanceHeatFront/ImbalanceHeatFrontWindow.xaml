@@ -46,11 +46,6 @@
                                Tags="L1, Bars, Depth"
                                Description="Per-distance L2 imbalance-ratio surface over a rolling time window. Coherent ridges across multiple levels signal one-sided book pressure — trade with (momentum) or against (mean-reversion) the ridge. Requires L2 depth (IB or cTrader).">
                 <StackPanel>
-                    <TextBlock Text="Instrument" Margin="0,0,0,4" />
-                    <uic:InstrumentPicker SearchText="{Binding InstrumentSearchText, Mode=TwoWay}"
-                                          ItemsSource="{Binding Instruments}"
-                                          SelectedInstrument="{Binding SelectedInstrument, Mode=TwoWay}"
-                                          Margin="0,0,0,16" />
 
                     <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
@@ -137,7 +132,7 @@
                  Start to rebuild with the new values. The surface Z-scale is render-only and live. -->
             <Border DockPanel.Dock="Top" Style="{StaticResource Strategy.ParamStrip}">
                 <DockPanel>
-                    <uic:StrategyChromeBar DockPanel.Dock="Right" SnapshotName="imbalance-heat-front"
+                    <uic:StrategyChromeBar DockPanel.Dock="Right" SnapshotName="imbalance-heat-front" ShowPresets="False"
                                            HelpTitle="READING THE HEAT FRONT">
                         <uic:StrategyChromeBar.HelpContent>
                             <TextBlock TextWrapping="Wrap" FontSize="11.5" Foreground="{DynamicResource Text.Primary}" LineHeight="17">
