@@ -25,7 +25,9 @@ public static class DependencyInjection
         {
             DataRequirement = StrategyDataRequirement.TradeTape | StrategyDataRequirement.L1 |
                               StrategyDataRequirement.Bars | StrategyDataRequirement.Depth,
-            BacktestBuild = contract => new ApexScalperStrategy(contract, ApexV2Options.Backtest),
+            // BacktestBuild was removed from BacktestStrategyOption on 2026-08-20 with the archived
+            // backtest engine; ApexV2Options.Backtest has nothing to feed. Rebuild against the next
+            // SDK release to make this plugin loadable again.
         });
 #if WINDOWS
         services.AddTransient<SigmaIcFlowStrategyWindow>();
