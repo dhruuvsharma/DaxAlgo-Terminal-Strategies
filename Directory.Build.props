@@ -19,7 +19,29 @@
       host's SdkInfo.Version (pre-1.0: every minor bump is a breaking plugin contract). Bump this in
       lockstep with a host upgrade, then rebuild + repackage.
     -->
-    <DaxAlgoSdkVersion>0.1.1-alpha</DaxAlgoSdkVersion>
+    <DaxAlgoSdkVersion Condition="'$(DaxAlgoSdkVersion)' == ''">0.1.1-alpha</DaxAlgoSdkVersion>
+
+    <!--
+      The host's dev-staging build opts into the in-tree SDK so local plugins cannot drift from the
+      host contract. Ordinary builds stay on the published NuGet packages above by default.
+    -->
+    <DaxAlgoUseLocalSdk Condition="'$(DaxAlgoUseLocalSdk)' == ''">false</DaxAlgoUseLocalSdk>
+    <DaxAlgoLocalSdkRoot Condition="'$(DaxAlgoLocalSdkRoot)' == ''"></DaxAlgoLocalSdkRoot>
+  </PropertyGroup>
+
+  <!--
+    Build-output redirect (Windows dev only). Keep this small-D: checkout free of bin/obj by
+    writing under a checkout-specific path on C:. DaxAlgoBuildRoot remains overridable for CI,
+    worktrees, and developers with a different build drive.
+  -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <DaxAlgoBuildRoot Condition="'$(DaxAlgoBuildRoot)' == ''">C:\DaxAlgoBuild</DaxAlgoBuildRoot>
+    <_DaxAlgoRepoDirName>$([System.IO.Path]::GetFileName($([System.IO.Path]::GetDirectoryName('$(MSBuildThisFileDirectory)'))))</_DaxAlgoRepoDirName>
+    <_DaxAlgoProjectRel>$([MSBuild]::MakeRelative($(MSBuildThisFileDirectory), $(MSBuildProjectDirectory)))</_DaxAlgoProjectRel>
+    <BaseIntermediateOutputPath Condition="'$(DaxAlgoLocalBuildOutputRoot)' == ''">$(DaxAlgoBuildRoot)\$(_DaxAlgoRepoDirName)\$(_DaxAlgoProjectRel)\obj\</BaseIntermediateOutputPath>
+    <BaseOutputPath Condition="'$(DaxAlgoLocalBuildOutputRoot)' == ''">$(DaxAlgoBuildRoot)\$(_DaxAlgoRepoDirName)\$(_DaxAlgoProjectRel)\bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath Condition="'$(DaxAlgoLocalBuildOutputRoot)' != ''">$(DaxAlgoLocalBuildOutputRoot)\obj\</BaseIntermediateOutputPath>
+    <BaseOutputPath Condition="'$(DaxAlgoLocalBuildOutputRoot)' != ''">$(DaxAlgoLocalBuildOutputRoot)\bin\</BaseOutputPath>
   </PropertyGroup>
 
   <!--

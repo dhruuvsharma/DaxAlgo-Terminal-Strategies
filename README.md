@@ -1,6 +1,6 @@
 # DaxAlgo Terminal — Strategy Pack
 
-The nine first-party strategies for **[DaxAlgo Terminal](https://github.com/dhruuvsharma/DaxAlgo-Terminal)**,
+The nine first-party strategies for **[DaxAlgo Terminal](https://daxalgo.ai)**,
 maintained as an independent repository. The terminal itself now ships as an **empty sandbox** — a fresh
 install has no built-in strategies; you author your own (in-app Roslyn builder / AI Strategy Builder) or
 install packs like this one. These strategies are just the first such pack.
@@ -8,6 +8,10 @@ install packs like this one. These strategies are just the first such pack.
 Each strategy is a runtime **plugin**: it compiles against the published `DaxAlgo.Sdk` / `DaxAlgo.Sdk.Wpf`
 NuGet packages (no host source needed) and the terminal loads it from its `plugins/` folder — the host is
 never recompiled.
+
+![SigmaIcFlow running live in DaxAlgo Terminal: signal matrix, per-signal detail, IC weights and the model card](docs/media/sigmaicflow.gif)
+
+*SigmaIcFlow live on BTCUSDT: the signal matrix, a per-signal detail view, Σ⁻¹·IC weights, and the model card with every formula and its live value.*
 
 ## The loop
 

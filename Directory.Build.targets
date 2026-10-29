@@ -1,0 +1,34 @@
+<Project>
+
+  <!-- The local switch is opt-in. Normal strategy builds retain their NuGet SDK references. -->
+  <ItemGroup Condition="'$(DaxAlgoUseLocalSdk)' == 'true'">
+    <PackageReference Remove="DaxAlgo.Sdk" />
+    <PackageReference Remove="DaxAlgo.Sdk.Wpf" />
+    <ProjectReference Include="$(DaxAlgoLocalSdkRoot)\DaxAlgo.Sdk.Wpf\DaxAlgo.Sdk.Wpf.csproj"
+                      GlobalPropertiesToRemove="BaseOutputPath;BaseIntermediateOutputPath" />
+  </ItemGroup>
+
+  <!-- Compatibility copies are needed only with the reduced in-tree Core used by local staging. -->
+  <ItemGroup Condition="'$(DaxAlgoUseLocalSdk)' != 'true'">
+    <Compile Remove="Engine\LegacyCore\**\*.cs" />
+  </ItemGroup>
+
+  <Target Name="ValidateLocalDaxAlgoSdk"
+          BeforeTargets="PrepareForBuild"
+          Condition="'$(DaxAlgoUseLocalSdk)' == 'true'">
+    <Error Condition="'$(DaxAlgoLocalSdkRoot)' == ''"
+           Text="DaxAlgoUseLocalSdk=true requires DaxAlgoLocalSdkRoot." />
+    <Error Condition="!Exists('$(DaxAlgoLocalSdkRoot)\DaxAlgo.Sdk\DaxAlgo.Sdk.csproj')"
+           Text="DaxAlgo.Sdk was not found under DaxAlgoLocalSdkRoot='$(DaxAlgoLocalSdkRoot)'." />
+    <Error Condition="!Exists('$(DaxAlgoLocalSdkRoot)\DaxAlgo.Sdk.Wpf\DaxAlgo.Sdk.Wpf.csproj')"
+           Text="DaxAlgo.Sdk.Wpf was not found under DaxAlgoLocalSdkRoot='$(DaxAlgoLocalSdkRoot)'." />
+  </Target>
+
+  <!-- Keep the staged manifest aligned with the same SDK version used for the local build. -->
+  <Target Name="StampLocalSdkPluginManifest"
+          AfterTargets="CopyFilesToOutputDirectory"
+          Condition="'$(DaxAlgoUseLocalSdk)' == 'true' and Exists('$(TargetDir)plugin.json')">
+    <Exec Command="powershell -NoProfile -NonInteractive -Command &quot;&amp; { $p = [IO.Path]::GetFullPath('$(TargetDir)plugin.json'); $j = Get-Content -LiteralPath $p -Raw | ConvertFrom-Json; $j.targetSdkVersion = '$(DaxAlgoSdkVersion)'; [IO.File]::WriteAllText($p, ($j | ConvertTo-Json -Depth 16), [Text.UTF8Encoding]::new($false)) }&quot;" />
+  </Target>
+
+</Project>

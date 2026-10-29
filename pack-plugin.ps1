@@ -10,7 +10,6 @@ param(
     [string]$Name = ""
 )
 $ErrorActionPreference = "Stop"
-$tfm = "net9.0-windows7.0"
 
 # Strategies carrying a PRIVATE HelixToolkit.Wpf dependency the host does NOT provide — it must ship
 # inside the package. Everything else the strategy links (TradingTerminal.*/DaxAlgo.Sdk*/MahApps/
@@ -40,7 +39,12 @@ foreach ($proj in $projects) {
     dotnet build $csproj -c $Configuration | Out-Host
     if ($LASTEXITCODE -ne 0) { throw "Build failed: $sName" }
 
-    $bin = Join-Path $proj.FullName "bin\$Configuration\$tfm"
+    $targetDirOutput = @(dotnet msbuild $csproj -nologo -p:Configuration=$Configuration -getProperty:TargetDir)
+    if ($LASTEXITCODE -ne 0) { throw "Could not evaluate TargetDir: $sName" }
+    $bin = [string]($targetDirOutput | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Last 1)
+    $bin = $bin.Trim()
+    if (-not [IO.Path]::IsPathRooted($bin)) { throw "MSBuild returned an invalid TargetDir for ${sName}: '$bin'" }
+
     $stage = Join-Path ([IO.Path]::GetTempPath()) ("daxplugin-" + [guid]::NewGuid().ToString("N"))
     New-Item -ItemType Directory $stage | Out-Null
     try {
